@@ -220,7 +220,7 @@ th {
 }
 
 body {
-  background-color: white;
+  background-color: #ecf0f1;
   font-size: 16px;
   line-height: 1.6;
   font-family: 'Open Sans', sans-serif;
@@ -229,6 +229,148 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-.container p#queryMsg {
+.container {
+  width: 960px;
+  margin: auto;
+}
+
+.container h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.container .ajaxMsg {
   height: 25px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.container .ajaxMsg p {
+  position: absolute;
+  top: 0px;
+  margin: 0;
+}
+
+.container .ajaxMsg p#errorMsg {
+  color: #c0392b;
+}
+
+.container .streamsContainer {
+  background-color: #34495e;
+  color: #ecf0f1;
+}
+
+.container .streamsContainer .streamContainer {
+  border: 1px solid #ecf0f1;
+  position: relative;
+}
+
+.container .streamsContainer .streamContainer .basicInfos {
+  display: flex;
+  z-index: 10;
+  height: 150px;
+  position: relative;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .logo img {
+  margin: 25px 25px;
+  width: 100px;
+  height: auto;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .infos {
+  margin-right: 10px;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .infos h2.userName {
+  margin: 10px auto 0px 20px;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .infos p.bio {
+  margin: 5px auto 10px 10px;
+  font-size: 0.8em;
+  height: 40px;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .infos .icons {
+  display: flex;
+  width: 200px;
+  margin: 0 auto 0 20px;
+  justify-content: space-around;
+  font-size: 0.9em;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px;
+  position: absolute;
+  right: 0px;
+  width: 70px;
+  height: 150px;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .status .indicator span {
+  font-size: 1.8em;
+  padding: 10px 10px;
+  color: #c0392b;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .status .indicator span.online {
+  color: #16a085;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .status .moreInfo {
+  cursor: pointer;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .status .moreInfo span {
+  margin: auto;
+  font-size: 1.5em;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer {
+  display: none;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer hr {
+  width: 40%;
+  margin: auto;
+  border: 1px solid white;
+  opacity: 0.3;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer .streaming {
+  display: flex;
+  z-index: -50;
+  height: 150px;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer .streaming .banner img {
+  height: 130px;
+  width: auto;
+  margin: 10px 10px;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .statusName {
+  margin: 25px auto 0px 10px;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .game {
+  margin: 0px auto 0 25px;
+  font-style: italic;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers {
+  margin: 20px 25px;
+}
+
+.reverse {
+  transform: rotate(180deg);
+}
+
+.hide {
+  display: none;
 }

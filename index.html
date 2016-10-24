@@ -4,50 +4,49 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous"/>
+  <!--link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous")-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.min.css"/>
   <link rel="stylesheet" href="assets/css/main.css"/>
-  <title>Twitchtv API</title>
+  <title>Twitch-Stream-Checker</title>
 </head>
 <body>
   <div class="container">
     <h1>Playing with Twitchtv API</h1>
-    <p id="queryMsg">w</p>
-    <table class="table table-stripped table-inverse table-hover">
-      <tr>
-        <td class="logo"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/freecodecamp-profile_image-d9514f2df0962329-300x300.png"/></td>
-        <td class="userInfo">
-          <div class="username">Username: FreeCodeCamp</div>
-          <div class="bio">Bio: We help you learn to code, then practice by building projects for nonprofits. Learn Full-stack JavaScript, build a portfolio, and get a coding job by joining our open source community at https://freecodecamp.com</div>
-          <div class="views">Views: 2316514</div>
-          <div class="followers">Followers: 3216574</div>
-        </td>
-        <td class="stream">
-          <div class="status">Online</div>
-          <div class="title">Streaming: Greg working on Electron-Vue boilerplate w/ Akira #programming #vuejs #electron</div>
-          <div class="game">Dota 2</div>
-          <div class="viewers">Viewers: 46879</div>
-          <div class="preview"> <img src="https://static-cdn.jtvnw.net/previews-ttv/live_user_superplay-320x240.jpg"/></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="logo"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/freecodecamp-profile_image-d9514f2df0962329-300x300.png"/></td>
-        <td class="userInfo">
-          <div class="username">Username: FreeCodeCamp</div>
-          <div class="bio">Bio: We help you learn to code, then practice by building projects for nonprofits. Learn Full-stack JavaScript, build a portfolio, and get a coding job by joining our open source community at https://freecodecamp.com</div>
-          <div class="views">Views: 2316514</div>
-          <div class="followers">Followers: 3216574</div>
-        </td>
-        <td class="stream">
-          <div class="status">Offline</div>
-          <div class="title">Last stream: Greg working on Electron-Vue boilerplate w/ Akira #programming #vuejs #electron</div>
-          <div class="viewers">Viewers: 46879</div>
-          <div class="preview"> <img src="https://static-cdn.jtvnw.net/previews-ttv/live_user_superplay-320x240.jpg"/></div>
-        </td>
-      </tr>
-    </table>
+    <div class="ajaxMsg">
+      <p id="queryMsg"> </p>
+      <p id="errorMsg"> </p>
+    </div>
+    <div class="streamsContainer">
+      <div class="streamContainer">
+        <div class="basicInfos">
+          <div class="logo"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/freecodecamp-profile_image-d9514f2df0962329-300x300.png"/></div>
+          <div class="infos">
+            <h2 class="userName">FreeCodeCamp</h2>
+            <p class="bio"> </p>
+            <div class="icons">
+              <div class="views"><span class="octicon octicon-eye"> </span><span> 1654</span></div>
+              <div class="followers"> <span class="octicon octicon-person"></span><span> 1657</span></div>
+            </div>
+          </div>
+          <div class="status"> 
+            <div class="indicator"><span class="octicon octicon-device-camera-video offline"></span></div>
+            <div class="moreInfo"><span class="octicon octicon-plus"></span><span class="octicon octicon-dash hide"></span></div>
+          </div>
+        </div>
+        <div class="streamingContainer">
+          <hr/>
+          <div class="streaming">
+            <div class="banner"><img src="https://static-cdn.jtvnw.net/previews-ttv/live_user_superplay-320x240.jpg"/></div>
+            <div class="streamInfos">
+              <h4 class="statusName">Greg working on Electron-Vue boilerplate w/ Akira #programming #vuejs #electron</h4>
+              <p class="game">Dota 2</p>
+              <div class="viewers"> <span class="octicon octicon-octoface"> </span><span> 1567</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
   <script src="assets/js/functions.js"></script>
 </body>

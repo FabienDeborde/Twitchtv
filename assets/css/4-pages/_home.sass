@@ -1,7 +1,116 @@
 .container
+  width: 960px
+  margin: auto
 
+  h1
+    text-align: center
+    color: $primary
 
-
-
-  p#queryMsg
+  .ajaxMsg
     height: 25px
+    margin-bottom: 10px
+    position: relative
+    p
+      position: absolute
+      top: 0px
+      margin: 0
+    p#errorMsg
+      color: $red
+
+
+  .streamsContainer
+    background-color: $secondary
+    color: $light
+
+    .streamContainer
+      border: 1px solid $light
+      position: relative
+
+      .basicInfos
+        display: flex
+        z-index: 10
+        height: 150px
+        position: relative
+
+        .logo
+          img
+            margin: 25px 25px
+            width: 100px
+            height: auto
+
+        .infos
+          margin-right: 10px
+
+          h2.userName
+            margin: 10px auto 0px 20px
+
+          p.bio
+            margin: 5px auto 10px 10px
+            font-size: 0.8em
+            height: 40px
+
+          .icons
+            display: flex
+            width: 200px
+            margin: 0 auto 0 20px
+            justify-content: space-around
+            font-size: 0.9em
+
+        .status
+          display: flex
+          flex-direction: column
+          align-items: center
+          justify-content: center
+          padding: 10px 10px
+          position: absolute
+          right: 0px
+          width: 70px
+          height: 150px
+          .indicator
+            span
+              font-size: 1.8em
+              padding: 10px 10px
+              &.online
+                color: $green
+              &.offline
+              color: $red
+          .moreInfo
+            cursor: pointer
+            span
+              margin: auto
+              font-size: 1.5em
+
+      .streamingContainer
+        display: none
+        hr
+          width: 40%
+          margin: auto
+          border: 1px solid $white
+          opacity: 0.3
+        .streaming
+          display: flex
+          z-index: -50
+          height: 150px
+
+          .banner
+            img
+              height: 130px
+              width: auto
+              margin: 10px 10px
+
+          .streamInfos
+
+            .statusName
+              margin: 25px auto 0px 10px
+            .game
+              margin: 0px auto 0 25px
+              font-style: italic
+
+            .viewers
+              margin: 20px 25px
+
+.reverse
+  transform: rotate(180deg)
+
+.hide
+  display: none

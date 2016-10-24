@@ -247,6 +247,8 @@ body {
 
 .container .ajaxMsg p {
   position: absolute;
+  width: 100%;
+  text-align: center;
   top: 0px;
   margin: 0;
 }
@@ -280,6 +282,7 @@ body {
 
 .container .streamsContainer .streamContainer .basicInfos .infos {
   margin-right: 10px;
+  width: 700px;
 }
 
 .container .streamsContainer .streamContainer .basicInfos .infos h2.userName {
@@ -300,6 +303,10 @@ body {
   font-size: 0.9em;
 }
 
+.container .streamsContainer .streamContainer .basicInfos .infos .icons span.octicon {
+  margin-right: 7px;
+}
+
 .container .streamsContainer .streamContainer .basicInfos .status {
   display: flex;
   flex-direction: column;
@@ -315,11 +322,15 @@ body {
 .container .streamsContainer .streamContainer .basicInfos .status .indicator span {
   font-size: 1.8em;
   padding: 10px 10px;
-  color: #c0392b;
+  color: white;
 }
 
 .container .streamsContainer .streamContainer .basicInfos .status .indicator span.online {
   color: #16a085;
+}
+
+.container .streamsContainer .streamContainer .basicInfos .status .indicator span.offline {
+  color: #c0392b;
 }
 
 .container .streamsContainer .streamContainer .basicInfos .status .moreInfo {
@@ -365,6 +376,10 @@ body {
 
 .container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers {
   margin: 20px 25px;
+}
+
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers span.octicon {
+  margin-right: 10px;
 }
 
 .reverse {

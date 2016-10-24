@@ -5,7 +5,7 @@ $(document).ready(function() {
   var streamsContainerEl = $('.streamsContainer');
 
   // Variables to store all the data
-    var id = '';
+    //var id = '';
     // User related data
     var userName = '';
     var bio = '';
@@ -22,7 +22,7 @@ $(document).ready(function() {
     var status = '';
 
   // Add the templated messages, toggle the +/- button, change the camera icon color
-  function updateContent(id){
+  function updateContent(){
     // basicInfo template
     var infoMsg = '<div class="basicInfos">'
     infoMsg += '<div class="logo"><img src="' + logo + '" alt="Logo of' + userName + '"/></div>';
@@ -41,7 +41,7 @@ $(document).ready(function() {
     streamingMsg += '</div></div></div></div>';
 
     // streamContainer template
-    var streamContainerMsg = '<div class="streamContainer" id="' + id + '" >' + infoMsg + streamingMsg + '</div>';
+    var streamContainerMsg = '<div class="streamContainer">' + infoMsg + streamingMsg + '</div>';
 
     streamsContainerEl.append(streamContainerMsg);
 
@@ -59,8 +59,15 @@ $(document).ready(function() {
     }
 
     // Toggle the Streaming Container and the +/- button
-    $('.moreInfo').on('click', function(){
-      console.log($(this).parents('.streamContainer'));
+    $('.moreInfo').unbind("click").on('click', function(){
+      // Target the children octicon + and - and toggle the hide class
+      $(this).children('.octicon-plus').toggleClass('hide');
+      $(this).children('.octicon-dash').toggleClass('hide');
+
+      // Target the streaming container (by getting the streamContainer parent then children streamingContainer of the clicked button) and slideToggle it
+      var streamingContainer = $(this).parents('div.streamContainer').children('.streamingContainer');
+
+      streamingContainer.slideToggle(500); // Toggle and slide the streaming container*/
     })
 
   }
@@ -71,8 +78,9 @@ $(document).ready(function() {
 
 
   // Prepare the function to query the data
-  function queryData(name, id){
-    id = id;
+  function queryData(name){
+    console.log('tictac');
+    //id = id;
     $.ajax({
       method: "GET",
       url: 'https://api.twitch.tv/kraken/' + category[0] + '/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
@@ -89,7 +97,9 @@ $(document).ready(function() {
       },
       success: function(data){
         // Show the container
-        $('.streamsContainer').removeClass('hide');
+        if(streamsContainerEl.hasClass('hide')){
+          streamsContainerEl.removeClass('hide').hide().fadeIn(900);
+        }
         // Get the data from the users endpoint
         userName = data.display_name;
         bio = data.bio;
@@ -119,28 +129,19 @@ $(document).ready(function() {
             followers = data.stream.channel.followers;
             url = data.stream.channel.url;
             status = data.stream.channel.status;
-            updateContent(id);
+            updateContent();
           } // end of else
         }); // end of $.getJSON()
       } // end of success()
     }) // end of $.ajax()
   }
 
-queryData(name[0], '0');
-queryData(name[0], '1');
-queryData(name[0], '2');
-queryData(name[0], '3');
-queryData(name[0], '4');
-queryData(name[0], '5');
-queryData(name[0], '6');
-queryData(name[0], '7');
+queryData('freecodecamp');
+queryData('freecodecamp');
+
+//setInterval(function(){queryData('freecodecamp')}, 5000);
+//setInterval(function(){ console.log("Hello"); }, 5000);
+
 
 
 }); // End of ready()
-
-/*
-// target the basicInfos container of the clicked button
-var streamContainer = $(this).parents('div.streamContainer');
-var parentID = streamContainer.attr('id');
-var streamingContainer = streamContainer.children('.streamingContainer');
-streamingContainer.slideToggle(500); // Toggle and slide the streaming container*/

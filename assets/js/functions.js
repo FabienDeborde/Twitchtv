@@ -4,8 +4,22 @@ $(document).ready(function() {
   var errorMsgEl = $('p#errorMsg');
   var streamsContainerEl = $('.streamsContainer');
 
-  // Variables to store all the data
-    // Object containing all data user/channel/stream related
+  // Variable to store element of the query url
+  var name = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
+
+  // Change the octicon-device-camera-video color
+  function changeColor(){
+    var cameraIcon = $('.octicon-device-camera-video');
+    if (streamData.streamStatus === true) {
+      cameraIcon.removeClass('offline online');
+      cameraIcon.addClass('online');
+    } else {
+      cameraIcon.removeClass('offline online');
+      cameraIcon.addClass('offline');
+    }
+  }
+
+  // Object containing all data user/channel/stream related
     var streamData = {
       // User related data
       userName:'',
@@ -25,12 +39,14 @@ $(document).ready(function() {
 
 
   // Add the templated messages, toggle the +/- button, change the camera icon color
-  function createContent(){
+  function createContent(streamData){
+    console.log(streamData);
     // basicInfo template
     var infoMsg = '<div class="basicInfos">'
     infoMsg += '<div class="logo"><img src="' + streamData.logo + '" alt="Logo of' + streamData.userName + '"/></div>';
     infoMsg += '<div class="infos"><h2 class="userName">' + streamData.userName + '</h2><p class="bio">' + streamData.bio + '</p><div class="icons" title="Total Views"><div class="views"><span class="octicon octicon-eye"> </span><span>' + streamData.views + '</span></div>';
-    infoMsg += '<div class="followers" title="Followers"> <span class="octicon octicon-person"></span><span>' + streamData.followers + '</span></div></div></div>';
+    infoMsg += '<div class="followers" title="Followers"><span class="octicon octicon-person"></span><span>' + streamData.followers + '</span></div>';
+    infoMsg += '<div class="link"><a href="' + streamData.url + '" target="_blank" title="Watch on the official page on Twitch!"><span class="octicon octicon-link-external"></span>Watch on the official page on Twitch!</a></div></div></div>';
     infoMsg += '<div class="status"><div class="indicator"><span class="octicon octicon-device-camera-video"></span></div> ';
     infoMsg += '<div class="moreInfo"><span class="octicon octicon-plus"></span><span class="octicon octicon-dash hide"></span></div></div></div>';
 
@@ -38,28 +54,27 @@ $(document).ready(function() {
     var streamingMsg = '<div class="streamingContainer">'
     streamingMsg += '<hr>';
     streamingMsg += '<div class="streaming"><div class="banner"><img src="' + streamData.video_banner + '" alt="Video banner of "' + streamData.userName + '"/></div>';
-    streamingMsg += '<div class="streamInfos"><h4 class="statusName">' + streamData.status + '</h4>';
-    streamingMsg += '<p class="game">' + streamData.game + '</p>';
-    streamingMsg += '<div class="viewers" title="Viewers"> <span class="octicon octicon-octoface"></span> <span> ' + streamData.viewers + ' </span></div>';
-    streamingMsg += '</div></div></div></div>';
-
+    // If the stream is offline
+    if(streamData.streamStatus === false) {
+      streamingMsg += '<div class="streamInfos"><h4 class="previousStream">Last Stream: </h4>' ;
+      streamingMsg += '<h4 class="statusName">' + streamData.status + '</h4>';
+      streamingMsg += '<p class="game">in: ' + streamData.game + '</p>';
+      streamingMsg += '</div></div></div></div>';
+    } else {
+    // If the stream is online
+      streamingMsg += '<div class="streamInfos"><h4 class="nowStreaming">Now streaming: </h4>' ;
+      streamingMsg += '<h4 class="statusName">' + streamData.status + '</h4>';
+      streamingMsg += '<p class="game">in: ' + streamData.game + '</p>';
+      streamingMsg += '<div class="viewers" title="Viewers"> <span class="octicon octicon-octoface"></span> <span> ' + streamData.viewers + ' </span></div>';
+      streamingMsg += '</div></div></div></div>';
+    }
     // streamContainer template
     var streamContainerMsg = '<div class="streamContainer">' + infoMsg + streamingMsg + '</div>';
 
     streamsContainerEl.append(streamContainerMsg);
 
-      // Change the octicon-device-camera-video color
+    // Change the octicon-device-camera-video color
     changeColor();
-    function changeColor(){
-      var cameraIcon = $('.octicon-device-camera-video');
-      if (streamData.streamStatus === true) {
-        cameraIcon.removeClass('offline online');
-        cameraIcon.addClass('online');
-      } else {
-        cameraIcon.removeClass('offline online');
-        cameraIcon.addClass('offline');
-      }
-    }
 
     // Toggle the Streaming Container and the +/- button
     $('.moreInfo').unbind("click").on('click', function(){
@@ -75,18 +90,11 @@ $(document).ready(function() {
 
   }
 
-  // Variable to store element of the query url
-  var category = ['users', 'streams', 'channels'];
-  var name = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
-
-
   // Prepare the function to query the data
   function queryData(name){
-    console.log('tictac');
-    //id = id;
     $.ajax({
       method: "GET",
-      url: 'https://api.twitch.tv/kraken/' + category[0] + '/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+      url: 'https://api.twitch.tv/kraken/users/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
       dataType:'jsonp',
       timeout: 2000,
       beforeSend: function(){
@@ -109,17 +117,20 @@ $(document).ready(function() {
         streamData.logo = data.logo;
 
         // Get the data from the streams endpoint
-        $.getJSON('https://api.twitch.tv/kraken/' + category[1] + '/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty&callback=?', function(data) {
+        $.getJSON('https://api.twitch.tv/kraken/streams/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty&callback=?', function(data) {
           // Check if there is a stream object if there is none
           if (data.stream === null) {
-            streamStatus = false;
+            streamData.streamStatus = false;
             // Get the data from the channels endpoint
-            $.getJSON('https://api.twitch.tv/kraken/' + category[2] + '/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty&callback=?', function(data) {
+            $.getJSON('https://api.twitch.tv/kraken/channels/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty&callback=?', function(data) {
               streamData.views = data.views;
               streamData.followers = data.followers;
               streamData.video_banner = data.video_banner;
               streamData.url = data.url;
-              createContent(); // Call the content update function
+              streamData.game = data.game;
+              streamData.status = data.status;
+
+              createContent(streamData); // Call the content update function
             }) // end of $.getJSON()
           // If there is a streaming object
           } else {
@@ -132,7 +143,7 @@ $(document).ready(function() {
             streamData.followers = data.stream.channel.followers;
             streamData.url = data.stream.channel.url;
             streamData.status = data.stream.channel.status;
-            createContent();
+            createContent(streamData);
           } // end of else
         }); // end of $.getJSON()
       } // end of success()
@@ -140,7 +151,8 @@ $(document).ready(function() {
   }
 
 queryData('OgamingSC2');
-queryData('freecodecamp');
+//queryData('freecodecamp');
+
 
 //setInterval(function(){queryData('freecodecamp')}, 5000);
 //setInterval(function(){ console.log("Hello"); }, 5000);

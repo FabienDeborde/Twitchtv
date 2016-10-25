@@ -20,36 +20,34 @@ $(document).ready(function() {
   }
 
   // Object containing all data user/channel/stream related
-    var streamData = {
-      // User related data
-      userName:'',
-      bio: '',
-      logo: '',
-      // Channel related data
-      streamStatus: '',
-      views: '',
-      followers: '',
-      video_banner: '',
-      url: '',
-      // Stream related data
-      viewers: '',
-      game: '',
-      status: ''
-    };
-
+  var streamData = {
+    id: '',
+    // User related data
+    userName:'',
+    bio: '',
+    logo: '',
+    // Channel related data
+    streamStatus: '',
+    views: '',
+    followers: '',
+    video_banner: '',
+    url: '',
+    // Stream related data
+    viewers: '',
+    game: '',
+    status: ''
+  };
 
   // Add the templated messages, toggle the +/- button, change the camera icon color
   function createContent(streamData){
-    console.log(streamData);
     // basicInfo template
     var infoMsg = '<div class="basicInfos">'
     infoMsg += '<div class="logo"><img src="' + streamData.logo + '" alt="Logo of' + streamData.userName + '"/></div>';
-    infoMsg += '<div class="infos"><h2 class="userName">' + streamData.userName + '</h2><p class="bio">' + streamData.bio + '</p><div class="icons" title="Total Views"><div class="views"><span class="octicon octicon-eye"> </span><span>' + streamData.views + '</span></div>';
-    infoMsg += '<div class="followers" title="Followers"><span class="octicon octicon-person"></span><span>' + streamData.followers + '</span></div>';
-    infoMsg += '<div class="link"><a href="' + streamData.url + '" target="_blank" title="Watch on the official page on Twitch!"><span class="octicon octicon-link-external"></span>Watch on the official page on Twitch!</a></div></div></div>';
+    infoMsg += '<div class="infos"><h2 class="userName">' + streamData.userName + '</h2><p class="bio">' + streamData.bio + '</p><div class="icons" title="Total Views"><div class="views"><span class="octicon octicon-eye"> </span><span class="totalViews">' + streamData.views + '</span></div>';
+    infoMsg += '<div class="followers" title="Followers"><span class="octicon octicon-person"></span><span class="totalFollowers">' + streamData.followers + '</span></div>';
+    infoMsg += '<div class="link"><a class="linkOff" href="' + streamData.url + '" target="_blank" title="Watch on the official page on Twitch!"><span class="octicon octicon-link-external"></span>Watch on the official page on Twitch!</a></div></div></div>';
     infoMsg += '<div class="status"><div class="indicator"><span class="octicon octicon-device-camera-video"></span></div> ';
     infoMsg += '<div class="moreInfo"><span class="octicon octicon-plus"></span><span class="octicon octicon-dash hide"></span></div></div></div>';
-
     // streamingContainer template
     var streamingMsg = '<div class="streamingContainer">'
     streamingMsg += '<hr>';
@@ -65,7 +63,7 @@ $(document).ready(function() {
       streamingMsg += '<div class="streamInfos"><h4 class="nowStreaming">Now streaming: </h4>' ;
       streamingMsg += '<h4 class="statusName">' + streamData.status + '</h4>';
       streamingMsg += '<p class="game">in: ' + streamData.game + '</p>';
-      streamingMsg += '<div class="viewers" title="Viewers"> <span class="octicon octicon-octoface"></span> <span> ' + streamData.viewers + ' </span></div>';
+      streamingMsg += '<div class="viewers" title="Viewers"> <span class="octicon octicon-octoface"></span><span class="totalViewers"> ' + streamData.viewers + ' </span></div>';
       streamingMsg += '</div></div></div></div>';
     }
     // streamContainer template
@@ -73,7 +71,7 @@ $(document).ready(function() {
 
     streamsContainerEl.append(streamContainerMsg);
 
-    // Change the octicon-device-camera-video color
+    // Call the changeColor function to change the camera icon color
     changeColor();
 
     // Toggle the Streaming Container and the +/- button
@@ -90,8 +88,25 @@ $(document).ready(function() {
 
   }
 
+
+  function updateContent(streamData){
+    $('h2.userName').text(streamData.userName);
+    $('p.bio').text(streamData.bio);
+    $('.logo').html('<img src="' + streamData.logo + '" alt="Logo of' + streamData.userName + '"/>');
+    streamData.streamStatus
+    $('.totalViews').text(streamData.views);
+    $('totalFollowers').text(streamData.followers);
+    $('banner').html('<img src="' + streamData.video_banner + '" alt="Video banner of "' + streamData.userName + '"/>');
+    $('.linkOff').attr('href', streamData.url);
+    $('.totalViewers').text(streamData.viewers);
+    $('.game').text('in: ' + streamData.game)
+    $('.statusName').text(streamData.status);
+
+    // Call the changeColor function to change the camera icon color
+    changeColor();
+  }
   // Prepare the function to query the data
-  function queryData(name){
+  function queryData(name, id){
     $.ajax({
       method: "GET",
       url: 'https://api.twitch.tv/kraken/users/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
@@ -107,50 +122,72 @@ $(document).ready(function() {
         queryMsgEl.text('');
       },
       success: function(data){
+        //console.log(id);
         // Show the container
         if(streamsContainerEl.hasClass('hide')){
           streamsContainerEl.removeClass('hide').hide().fadeIn(900);
         }
+
         // Get the data from the users endpoint
         streamData.userName = data.display_name;
         streamData.bio = data.bio;
         streamData.logo = data.logo;
 
-        // Get the data from the streams endpoint
-        $.getJSON('https://api.twitch.tv/kraken/streams/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty&callback=?', function(data) {
-          // Check if there is a stream object if there is none
-          if (data.stream === null) {
-            streamData.streamStatus = false;
-            // Get the data from the channels endpoint
-            $.getJSON('https://api.twitch.tv/kraken/channels/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty&callback=?', function(data) {
-              streamData.views = data.views;
-              streamData.followers = data.followers;
-              streamData.video_banner = data.video_banner;
-              streamData.url = data.url;
-              streamData.game = data.game;
-              streamData.status = data.status;
+        queryStreamData();
+        function queryStreamData(){
+          // Get the data from the streams endpoint
+          $.ajax({
+            method: "GET",
+            url: 'https://api.twitch.tv/kraken/streams/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+            dataType:'jsonp',
+            timeout: 2000,
+            success: function(data){
+              if (data.stream === null) {
+                streamData.streamStatus = false;
+                // Get the data from the channels endpoint
+                queryChannelData();
+                function queryChannelData(){
+                  $.ajax({
+                    method: "GET",
+                    url: 'https://api.twitch.tv/kraken/channels/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+                    dataType:'jsonp',
+                    timeout: 2000,
+                    success: function(data){
+                    // Fetch the data into the streamData object
+                    streamData.views = data.views;
+                    streamData.followers = data.followers;
+                    streamData.video_banner = data.video_banner;
+                    streamData.url = data.url;
+                    streamData.game = data.game;
+                    streamData.status = data.status;
+                    // Call the content update function
+                    createContent(streamData);
+                    }
+                  }) // end of $.ajax()
+                }
 
-              createContent(streamData); // Call the content update function
-            }) // end of $.getJSON()
-          // If there is a streaming object
-          } else {
-            // Stay in the streams endpoint and fetch the data
-            streamData.streamStatus = true;
-            streamData.viewers = data.stream.viewers;
-            streamData.game = data.stream.game;
-            streamData.video_banner = data.stream.preview.medium;
-            streamData.views = data.stream.channel.views;
-            streamData.followers = data.stream.channel.followers;
-            streamData.url = data.stream.channel.url;
-            streamData.status = data.stream.channel.status;
-            createContent(streamData);
-          } // end of else
-        }); // end of $.getJSON()
+              // If there is a streaming object
+              } else {
+                // // Fetch the data into the streamData object from the streams endpoint
+                streamData.streamStatus = true;
+                streamData.viewers = data.stream.viewers;
+                streamData.game = data.stream.game;
+                streamData.video_banner = data.stream.preview.medium;
+                streamData.views = data.stream.channel.views;
+                streamData.followers = data.stream.channel.followers;
+                streamData.url = data.stream.channel.url;
+                streamData.status = data.stream.channel.status;
+                // Call the content update function
+                createContent(streamData);
+              } // end of else
+            } // end of succes{}
+          }); // end of $.ajax()
+        } // end of queryStreamData()
       } // end of success()
     }) // end of $.ajax()
   }
 
-queryData('OgamingSC2');
+queryData('OgamingSC2','1');
 //queryData('freecodecamp');
 
 

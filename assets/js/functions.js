@@ -88,7 +88,7 @@ $(document).ready(function() {
 
   }
 
-
+  // Update the already added content
   function updateContent(streamData){
     $('h2.userName').text(streamData.userName);
     $('p.bio').text(streamData.bio);
@@ -105,89 +105,92 @@ $(document).ready(function() {
     // Call the changeColor function to change the camera icon color
     changeColor();
   }
+
   // Prepare the function to query the data
   function queryData(name, id){
-    $.ajax({
-      method: "GET",
-      url: 'https://api.twitch.tv/kraken/users/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
-      dataType:'jsonp',
-      timeout: 2000,
-      beforeSend: function(){
-        queryMsgEl.text("Fetching data, please wait...");
-      },
-      error: function(data){
-        errorMsgEl.text('An error occured while trying to fetch data. Please try again later.');
-      },
-      complete: function(){
-        queryMsgEl.text('');
-      },
-      success: function(data){
-        //console.log(id);
-        // Show the container
-        if(streamsContainerEl.hasClass('hide')){
-          streamsContainerEl.removeClass('hide').hide().fadeIn(900);
-        }
+    for (var i = 0; i < 3; i++) {
+      $.ajax({
+        method: "GET",
+        url: 'https://api.twitch.tv/kraken/users/' + name[i] + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+        dataType:'jsonp',
+        timeout: 2000,
+        beforeSend: function(){
+          queryMsgEl.text("Fetching data, please wait...");
+        },
+        error: function(data){
+          errorMsgEl.text('An error occured while trying to fetch data. Please try again later.');
+        },
+        complete: function(){
+          queryMsgEl.text('');
+        },
+        success: function(data){
+          // Show the container
+          if(streamsContainerEl.hasClass('hide')){
+            streamsContainerEl.removeClass('hide').hide().fadeIn(900);
+          }
 
-        // Get the data from the users endpoint
-        streamData.userName = data.display_name;
-        streamData.bio = data.bio;
-        streamData.logo = data.logo;
+          // Get the data from the users endpoint
+          streamData.userName = data.display_name;
+          streamData.bio = data.bio;
+          streamData.logo = data.logo;
 
-        queryStreamData();
-        function queryStreamData(){
-          // Get the data from the streams endpoint
-          $.ajax({
-            method: "GET",
-            url: 'https://api.twitch.tv/kraken/streams/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
-            dataType:'jsonp',
-            timeout: 2000,
-            success: function(data){
-              if (data.stream === null) {
-                streamData.streamStatus = false;
-                // Get the data from the channels endpoint
-                queryChannelData();
-                function queryChannelData(){
-                  $.ajax({
-                    method: "GET",
-                    url: 'https://api.twitch.tv/kraken/channels/' + name + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
-                    dataType:'jsonp',
-                    timeout: 2000,
-                    success: function(data){
-                    // Fetch the data into the streamData object
-                    streamData.views = data.views;
-                    streamData.followers = data.followers;
-                    streamData.video_banner = data.video_banner;
-                    streamData.url = data.url;
-                    streamData.game = data.game;
-                    streamData.status = data.status;
-                    // Call the content update function
-                    createContent(streamData);
-                    }
-                  }) // end of $.ajax()
-                }
+          queryStreamData();
+          function queryStreamData(){
+            // Get the data from the streams endpoint
+            $.ajax({
+              method: "GET",
+              url: 'https://api.twitch.tv/kraken/streams/' + name[i] + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+              dataType:'jsonp',
+              timeout: 2000,
+              success: function(data){
+                if (data.stream === null) {
+                  streamData.streamStatus = false;
+                  // Get the data from the channels endpoint
+                  queryChannelData();
+                  function queryChannelData(){
+                    $.ajax({
+                      method: "GET",
+                      url: 'https://api.twitch.tv/kraken/channels/' + name[i] + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+                      dataType:'jsonp',
+                      timeout: 2000,
+                      success: function(data){
+                      // Fetch the data into the streamData object
+                      streamData.views = data.views;
+                      streamData.followers = data.followers;
+                      streamData.video_banner = data.video_banner;
+                      streamData.url = data.url;
+                      streamData.game = data.game;
+                      streamData.status = data.status;
+                      // Call the content update function
+                      createContent(streamData);
+                      }
+                    }) // end of $.ajax()
+                  }
 
-              // If there is a streaming object
-              } else {
-                // // Fetch the data into the streamData object from the streams endpoint
-                streamData.streamStatus = true;
-                streamData.viewers = data.stream.viewers;
-                streamData.game = data.stream.game;
-                streamData.video_banner = data.stream.preview.medium;
-                streamData.views = data.stream.channel.views;
-                streamData.followers = data.stream.channel.followers;
-                streamData.url = data.stream.channel.url;
-                streamData.status = data.stream.channel.status;
-                // Call the content update function
-                createContent(streamData);
-              } // end of else
-            } // end of succes{}
-          }); // end of $.ajax()
-        } // end of queryStreamData()
-      } // end of success()
-    }) // end of $.ajax()
+                // If there is a streaming object
+                } else {
+                  // // Fetch the data into the streamData object from the streams endpoint
+                  streamData.streamStatus = true;
+                  streamData.viewers = data.stream.viewers;
+                  streamData.game = data.stream.game;
+                  streamData.video_banner = data.stream.preview.medium;
+                  streamData.views = data.stream.channel.views;
+                  streamData.followers = data.stream.channel.followers;
+                  streamData.url = data.stream.channel.url;
+                  streamData.status = data.stream.channel.status;
+                  // Call the content update function
+                  createContent(streamData);
+                } // end of else
+              } // end of succes{}
+            }); // end of $.ajax()
+          } // end of queryStreamData()
+        } // end of success()
+      }) // end of $.ajax()
+    }
+
   }
 
-queryData('OgamingSC2','1');
+queryData(name,'1');
 //queryData('freecodecamp');
 
 

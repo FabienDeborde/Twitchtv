@@ -37,6 +37,8 @@ $(document).ready(function() {
     game: '',
     status: ''
   };
+  var streamsContainerArr = [];
+  var myVar='';
 
   // Add the templated messages, toggle the +/- button, change the camera icon color
   function createContent(streamData){
@@ -70,6 +72,8 @@ $(document).ready(function() {
     var streamContainerMsg = '<div class="streamContainer">' + infoMsg + streamingMsg + '</div>';
 
     streamsContainerEl.append(streamContainerMsg);
+
+
 
     // Call the changeColor function to change the camera icon color
     changeColor();

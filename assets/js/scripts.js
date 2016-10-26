@@ -7,7 +7,6 @@ $(document).ready(function() {
   var queryMsgEl = $('p#queryMsg');
   var errorMsgEl = $('p#errorMsg');
   var streamsContainerEl = $('.streamsContainer');
-
   // Object containing all data user/channel/stream related
   var streamData = {
     id: '',
@@ -72,7 +71,7 @@ $(document).ready(function() {
 
   // Contains the errorDiv template
   var errorDiv = function userError(queryName){
-    var errorMessage = '<div class="errorContainer"><div class="errorMessage">Error: "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
+    var errorMessage = '<div class="errorContainer"><div class="errorMessage"><span class="octicon octicon-bug"></span>Oops... "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
     return errorMessage;
   }
 
@@ -89,23 +88,27 @@ $(document).ready(function() {
   }
 
   // Hide/Show the Streaming Container and change the +/- button
-  // Delegate the event to the static parent container streamsContainer
-  $('.streamsContainer').on('click',$('.moreInfo'), function(event){
-    var target = $(event.target);
-    if (target.hasClass('octicon-plus')) {
-      target.hide();
-      target.next('.octicon-dash').show();
-    } else if (target.hasClass('octicon-dash')) {
-      target.hide();
-      target.prev('.octicon-plus').show();
-    }
+  function clickEvent(){
+    $('.moreInfo').unbind('click').on('click',function(event){
 
-    // Target the streaming container (by getting the streamContainer parent then children streamingContainer of the clicked button) and slideToggle it
-    var streamingContainer = target.parents('div.streamContainer').children('.streamingContainer');
+      var target = $(event.target);
+      console.log(target);
+      if (target.hasClass('octicon-plus')) {
+        target.hide();
+        target.next('.octicon-dash').show();
+      } else if (target.hasClass('octicon-dash')) {
+        target.hide();
+        target.prev('.octicon-plus').show();
+      }
 
-    // Toggle and slide the streaming container
-    streamingContainer.slideToggle(500);
-  });
+      // Target the streaming container (by getting the streamContainer parent then children streamingContainer of the clicked button) and slideToggle it
+      var streamingContainer = target.parents('div.streamContainer').children('.streamingContainer');
+
+      // Toggle and slide the streaming container
+      streamingContainer.slideToggle(500);
+    });
+  }
+
 
   function queryUserInfo(queryName){
     $.ajax({
@@ -121,7 +124,7 @@ $(document).ready(function() {
       },
       success: function(data){
         console.log(data.bio);
-        streamData.bio = data.bio;
+        //streamData.bio = data.bio;
 
         $.ajax({
           method:'GET',
@@ -130,13 +133,37 @@ $(document).ready(function() {
           timeout: 2000,
           success: function(data){
             if (data.stream === null) {
+              console.log(data.stream);
+              streamData.streamStatus = false;
               // Query in channels endpoint
               console.log('Stream is offline');
-              streamData.streamStatus = false;
+              $.ajax({
+                method:'GET',
+                url: 'https://api.twitch.tv/kraken/channels/' + queryName + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+                dataType:'jsonp',
+                timeout: 2000,
+                success: function(data){
+                  //fetch data from the streams endpoint into the streamData object
+                  // User data
+                  streamData.userName = data.display_name;
+                  streamData.logo = data.logo;
+                  // Channel data
+                  streamData.views = data.views;
+                  streamData.followers = data.followers;
+                  streamData.video_banner = data.video_banner;
+                  streamData.url = data.url;
+                  // Stream data
+                  streamData.game = data.game;
+                  streamData.status = data.status;
 
+
+                  streamsContainerEl.append(msg(streamData));
+                  changeColor();
+                  clickEvent();
+                }
+              });
             } else if (data.status === 404) {
               // Stream Channel doesn't exist
-              console.log('Stream Channel doesn\'t exist');
               streamsContainerEl.append(errorDiv(queryName));
             } else {
               //fetch data from the streams endpoint into the streamData object
@@ -157,6 +184,7 @@ $(document).ready(function() {
 
               streamsContainerEl.append(msg(streamData));
               changeColor();
+              clickEvent();
               //console.log(msg(streamData));
             } // end of else
           } // end of success

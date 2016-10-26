@@ -11,6 +11,7 @@ $(document).ready(function() {
   var streamData = {
     id: '',
     // User related data
+    name: '',
     userName:'',
     bio: '',
     logo: '',
@@ -81,7 +82,7 @@ $(document).ready(function() {
       streamData.streamStatus = 'streamOffline'
     }
     // streamContainer template
-    var streamContainerMsg = '<div class="streamContainer ' + streamData.streamStatus +'" id="'+ streamData.userName + '">' + infoMsg + streamingMsg + '</div>';
+    var streamContainerMsg = '<div class="streamContainer ' + streamData.streamStatus +'" id="'+ streamData.name + '">' + infoMsg + streamingMsg + '</div>';
 
     return streamContainerMsg;
   }
@@ -128,7 +129,9 @@ $(document).ready(function() {
         queryMsgEl.text('');
       },
       success: function(data){
-        var bio = data.bio; // Storing this data in a new var to pass it to the next ajax calls
+        // Storing these data in new var to pass it to the next ajax calls
+        var bio = data.bio;
+        var name = data.name;
         // Call the Streams endpoint
         $.ajax({
           method:'GET',
@@ -154,6 +157,7 @@ $(document).ready(function() {
                   streamData.userName = data.display_name;
                   streamData.logo = data.logo;
                   streamData.bio = bio;
+                  streamData.name = name;
                   // Channel data
                   streamData.views = data.views;
                   streamData.followers = data.followers;
@@ -176,6 +180,7 @@ $(document).ready(function() {
               streamData.userName = data.stream.channel.display_name;
               streamData.logo = data.stream.channel.logo;
               streamData.bio = bio;
+              streamData.name = name;
               // Channel data
               streamData.views = data.stream.channel.views;
               streamData.followers = data.stream.channel.followers;
@@ -209,4 +214,39 @@ $(document).ready(function() {
   $('.refresh').on('click', function(){
     updateContent();
   })
+
+  // Click event to filter the streams status
+  $('.filter').on('click', function(event){
+    var target = $(event.target);
+    var targetText = target.text();
+
+    var offlineEl = $('.streamsContainer').find('.streamOffline');
+    var onlineEl = $('.streamsContainer').find('.streamOnline');
+    var allEl = $('.streamsContainer').find('.streamContainer');
+    var errorEl = $('.streamsContainer').find('.errorContainer');
+
+    if (targetText === 'Online') {
+      onlineEl.show();
+      offlineEl.hide();
+      errorEl.hide();
+    } else if (targetText === 'Offline') {
+      onlineEl.hide();
+      offlineEl.show();
+      errorEl.hide();
+    } else {
+      onlineEl.show();
+      offlineEl.show();
+      errorEl.show();
+    }
+
+
+
+  })
+
+  // Keyup event to filter the streams with text
+  $('#filterTxt').on('keyup', function(event){
+    var textVal = ($('#filterTxt').val());
+    
+  })
+
 });

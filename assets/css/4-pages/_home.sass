@@ -24,29 +24,33 @@ html
 
 
   .streamsContainer
-    background-color: $secondary
-    color: $light
+
+    color: $primary
 
     .errorContainer
       height: 150px
-      background-color: lighten($secondary, 50%)
+      background-color: lighten($primary, 45%)!important
       display: flex
       align-items: center
       .errorMessage
-        background-color: $secondary
+        background-color: $primary
         text-align: center
         width: 100%
         height: 50px
         line-height: 50px
         font-size: 1.4em
-        border: 2px solid $red
+        color: $lightgrey
         span
           margin-right: 10px
           font-size: 1em
 
     .streamContainer, .errorContainer
-      border: 1px solid $light
+      background-color: $white
+      border: 2px solid $primary
       position: relative
+      margin-bottom: 3px
+      border-radius: 5px
+
 
       .basicInfos
         display: flex
@@ -69,7 +73,7 @@ html
 
           p.bio
             margin: 5px auto 10px 10px
-            font-size: 0.8em
+            font-size: 0.84em
             height: 40px
 
           .icons
@@ -119,8 +123,11 @@ html
         hr
           width: 40%
           margin: auto
-          border: 1px solid $white
+          border: 1px solid $primary
           opacity: 0.3
+        .noStream
+          text-align: center
+          font-style: italic
         .streaming
           display: flex
           z-index: -50

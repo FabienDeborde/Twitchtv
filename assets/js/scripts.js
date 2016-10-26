@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
    // My channels array
-  var name = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
+  var names = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "comster404", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
 
   //Variable to store element
   var queryMsgEl = $('p#queryMsg');
@@ -47,6 +47,10 @@ $(document).ready(function() {
     infoMsg += '<div class="moreInfo"><span class="octicon octicon-plus"></span><span class="octicon octicon-dash hide"></span></div>'
     infoMsg += '</div></div>'; // close status, basicInfos
 
+    // Cleaning the null / empty variables
+    if (streamData.video_banner === null) {streamData.video_banner = 'assets/img/nopreview.png';}
+    if (streamData.game === null) {streamData.game = '(No data)';}
+    
     // streamingContainer template
     var streamingMsg = '<div class="streamingContainer">'
     streamingMsg += '<hr>';
@@ -66,6 +70,10 @@ $(document).ready(function() {
       streamingMsg += '<p class="game">in: ' + streamData.game + '</p>';
       streamingMsg += '<div class="viewers" title="Viewers"> <span class="octicon octicon-octoface"></span><span class="totalViewers"> ' + streamData.viewers + ' </span></div>';
       streamingMsg += '</div></div></div>';
+    }
+
+    if (streamData.status === null) {
+      streamingMsg = '<div class="streamingContainer"><h4 class="noStream"> No previous Stream data available.</h4></div>';
     }
     // streamContainer template
     var streamContainerMsg = '<div class="streamContainer">' + infoMsg + streamingMsg + '</div>';
@@ -120,7 +128,11 @@ $(document).ready(function() {
           dataType:'jsonp',
           timeout: 2000,
           success: function(data){
-            if (data.stream === null) {
+            if (data.status === 404) {
+              // Stream Channel doesn't exist
+              streamsContainerEl.append(errorDiv(queryName));
+              // If there is no streaming now
+            } else if (data.stream === null) {
               // Call the Channels endpoint
               $.ajax({
                 method:'GET',
@@ -148,9 +160,7 @@ $(document).ready(function() {
                   clickEvent();
                 }
               })
-            } else if (data.status === 404) {
-              // Stream Channel doesn't exist
-              streamsContainerEl.append(errorDiv(queryName));
+            // If there is a streaming now
             } else {
               //fetch data from the streams endpoint into the streamData object
               streamData.streamStatus = true;
@@ -179,18 +189,10 @@ $(document).ready(function() {
   } // end of queryUserInfo
 
 
-
-
-queryUserInfo(name[0]);
-queryUserInfo(name[1]);
-queryUserInfo('ppd');
-queryUserInfo(name[3]);
-queryUserInfo('brunofin');
-/*queryUserInfo(name[4], 4);
-queryUserInfo(name[5], 5);
-queryUserInfo(name[6], 6);
-queryUserInfo(name[7], 7);
-queryUserInfo(name[8], 8);*/
+  // Loop trhough the names array and call the query function
+  for (var i = 0; i < names.length; i++) {
+    queryUserInfo(names[i]);
+  }
 
 
 });

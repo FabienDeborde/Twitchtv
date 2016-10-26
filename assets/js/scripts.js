@@ -28,7 +28,6 @@ $(document).ready(function() {
   };
 
   // Contains the templated message
-
   var msg = function createContent(streamData){
     // basicInfo template
     var infoMsg = '<div class="basicInfos">'
@@ -68,9 +67,13 @@ $(document).ready(function() {
     // streamContainer template
     var streamContainerMsg = '<div class="streamContainer">' + infoMsg + streamingMsg + '</div>';
 
-    changeColor();
-    
     return streamContainerMsg;
+  }
+
+  // Contains the errorDiv template
+  var errorDiv = function userError(queryName){
+    var errorMessage = '<div class="errorContainer"><div class="errorMessage">Error: "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
+    return errorMessage;
   }
 
   // Change the octicon-device-camera-video color
@@ -104,33 +107,72 @@ $(document).ready(function() {
     streamingContainer.slideToggle(500);
   });
 
-  function queryUserInfo(queryName, id){
-    var id = id;
+  function queryUserInfo(queryName){
     $.ajax({
       method:'GET',
       url: 'https://api.twitch.tv/kraken/users/' + queryName + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
       dataType:'jsonp',
       timeout: 2000,
+      beforeSend: function(){
+        queryMsgEl.text("Fetching data, please wait...");
+      },
+      complete: function(){
+        queryMsgEl.text('');
+      },
       success: function(data){
-        streamData.userName = data.display_name;
+        console.log(data.bio);
         streamData.bio = data.bio;
-        streamData.logo = data.logo;
 
-        streamsContainerEl.append(msg(streamData));
-        //console.log(msg(streamData));
+        $.ajax({
+          method:'GET',
+          url: 'https://api.twitch.tv/kraken/streams/' + queryName + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
+          dataType:'jsonp',
+          timeout: 2000,
+          success: function(data){
+            if (data.stream === null) {
+              // Query in channels endpoint
+              console.log('Stream is offline');
+              streamData.streamStatus = false;
+
+            } else if (data.status === 404) {
+              // Stream Channel doesn't exist
+              console.log('Stream Channel doesn\'t exist');
+              streamsContainerEl.append(errorDiv(queryName));
+            } else {
+              //fetch data from the streams endpoint into the streamData object
+              streamData.streamStatus = true;
+              // User data
+              streamData.userName = data.stream.channel.display_name;
+              streamData.logo = data.stream.channel.logo;
+              // Channel data
+              streamData.views = data.stream.channel.views;
+              streamData.followers = data.stream.channel.followers;
+              streamData.video_banner = data.stream.preview.medium;
+              streamData.url = data.stream.channel.url;
+              // Stream data
+              streamData.viewers = data.stream.viewers;
+              streamData.game = data.stream.game;
+              streamData.status = data.stream.channel.status;
 
 
-      }
-    })
-  }
+              streamsContainerEl.append(msg(streamData));
+              changeColor();
+              //console.log(msg(streamData));
+            } // end of else
+          } // end of success
+        }) // end of ajax
+      } // end of success
+    }) // end of ajax
+  } // end of queryUserInfo
 
 
 
-  queryUserInfo(name[0], 0);
-  queryUserInfo(name[1], 1);
-  queryUserInfo(name[2], 2);
-  /*queryUserInfo(name[3], 3);
-  queryUserInfo(name[4], 4);
+  queryUserInfo(name[0]);
+  queryUserInfo(name[1]);
+  queryUserInfo('ppd');
+  queryUserInfo(name[3]);
+  queryUserInfo('brunofin');
+  /*queryUserInfo(name[4], 4);
   queryUserInfo(name[5], 5);
   queryUserInfo(name[6], 6);
   queryUserInfo(name[7], 7);
@@ -138,3 +180,6 @@ $(document).ready(function() {
 
 
 });
+
+
+/* */

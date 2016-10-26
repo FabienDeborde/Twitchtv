@@ -262,40 +262,57 @@ body {
   color: #ecf0f1;
 }
 
-.container .streamsContainer .streamContainer {
+.container .streamsContainer .errorContainer {
+  height: 150px;
+  background-color: #b9c9d8;
+  display: flex;
+  align-items: center;
+}
+
+.container .streamsContainer .errorContainer .errorMessage {
+  background-color: #34495e;
+  text-align: center;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.4em;
+  border: 2px solid #c0392b;
+}
+
+.container .streamsContainer .streamContainer, .container .streamsContainer .errorContainer {
   border: 1px solid #ecf0f1;
   position: relative;
 }
 
-.container .streamsContainer .streamContainer .basicInfos {
+.container .streamsContainer .streamContainer .basicInfos, .container .streamsContainer .errorContainer .basicInfos {
   display: flex;
   z-index: 10;
   height: 150px;
   position: relative;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .logo img {
+.container .streamsContainer .streamContainer .basicInfos .logo img, .container .streamsContainer .errorContainer .basicInfos .logo img {
   margin: 25px 25px;
   width: 100px;
   height: auto;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos {
+.container .streamsContainer .streamContainer .basicInfos .infos, .container .streamsContainer .errorContainer .basicInfos .infos {
   margin-right: 10px;
   width: 700px;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos h2.userName {
+.container .streamsContainer .streamContainer .basicInfos .infos h2.userName, .container .streamsContainer .errorContainer .basicInfos .infos h2.userName {
   margin: 10px auto 0px 20px;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos p.bio {
+.container .streamsContainer .streamContainer .basicInfos .infos p.bio, .container .streamsContainer .errorContainer .basicInfos .infos p.bio {
   margin: 5px auto 10px 10px;
   font-size: 0.8em;
   height: 40px;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos .icons {
+.container .streamsContainer .streamContainer .basicInfos .infos .icons, .container .streamsContainer .errorContainer .basicInfos .infos .icons {
   display: flex;
   width: 470px;
   margin: 0 auto 0 20px;
@@ -303,20 +320,20 @@ body {
   font-size: 0.9em;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos .icons span.octicon {
+.container .streamsContainer .streamContainer .basicInfos .infos .icons span.octicon, .container .streamsContainer .errorContainer .basicInfos .infos .icons span.octicon {
   margin-right: 7px;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos .icons a {
+.container .streamsContainer .streamContainer .basicInfos .infos .icons a, .container .streamsContainer .errorContainer .basicInfos .infos .icons a {
   text-decoration: none;
   color: white;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .infos .icons a:hover {
+.container .streamsContainer .streamContainer .basicInfos .infos .icons a:hover, .container .streamsContainer .errorContainer .basicInfos .infos .icons a:hover {
   text-decoration: underline;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .status {
+.container .streamsContainer .streamContainer .basicInfos .status, .container .streamsContainer .errorContainer .basicInfos .status {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -328,73 +345,73 @@ body {
   height: 150px;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .status .indicator span {
+.container .streamsContainer .streamContainer .basicInfos .status .indicator span, .container .streamsContainer .errorContainer .basicInfos .status .indicator span {
   font-size: 1.8em;
   padding: 10px 10px;
   color: white;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .status .indicator span.online {
+.container .streamsContainer .streamContainer .basicInfos .status .indicator span.online, .container .streamsContainer .errorContainer .basicInfos .status .indicator span.online {
   color: #16a085;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .status .indicator span.offline {
+.container .streamsContainer .streamContainer .basicInfos .status .indicator span.offline, .container .streamsContainer .errorContainer .basicInfos .status .indicator span.offline {
   color: #c0392b;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .status .moreInfo {
+.container .streamsContainer .streamContainer .basicInfos .status .moreInfo, .container .streamsContainer .errorContainer .basicInfos .status .moreInfo {
   cursor: pointer;
   position: absolute;
   bottom: 15px;
 }
 
-.container .streamsContainer .streamContainer .basicInfos .status .moreInfo span {
+.container .streamsContainer .streamContainer .basicInfos .status .moreInfo span, .container .streamsContainer .errorContainer .basicInfos .status .moreInfo span {
   margin: auto;
   font-size: 1.5em;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer {
+.container .streamsContainer .streamContainer .streamingContainer, .container .streamsContainer .errorContainer .streamingContainer {
   display: none;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer hr {
+.container .streamsContainer .streamContainer .streamingContainer hr, .container .streamsContainer .errorContainer .streamingContainer hr {
   width: 40%;
   margin: auto;
   border: 1px solid white;
   opacity: 0.3;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming {
+.container .streamsContainer .streamContainer .streamingContainer .streaming, .container .streamsContainer .errorContainer .streamingContainer .streaming {
   display: flex;
   z-index: -50;
   height: 150px;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming .banner img {
+.container .streamsContainer .streamContainer .streamingContainer .streaming .banner img, .container .streamsContainer .errorContainer .streamingContainer .streaming .banner img {
   height: 130px;
   width: auto;
   margin: 10px 10px;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .previousStream, .container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .nowStreaming {
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .previousStream, .container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .nowStreaming, .container .streamsContainer .errorContainer .streamingContainer .streaming .streamInfos .previousStream, .container .streamsContainer .errorContainer .streamingContainer .streaming .streamInfos .nowStreaming {
   margin: 20px auto 0px 10px;
   font-style: italic;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .statusName {
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .statusName, .container .streamsContainer .errorContainer .streamingContainer .streaming .streamInfos .statusName {
   margin: 10px auto 0px 20px;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .game {
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .game, .container .streamsContainer .errorContainer .streamingContainer .streaming .streamInfos .game {
   margin: 0px auto 0 25px;
   font-style: italic;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers {
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers, .container .streamsContainer .errorContainer .streamingContainer .streaming .streamInfos .viewers {
   margin: 10px 25px;
 }
 
-.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers span.octicon {
+.container .streamsContainer .streamContainer .streamingContainer .streaming .streamInfos .viewers span.octicon, .container .streamsContainer .errorContainer .streamingContainer .streaming .streamInfos .viewers span.octicon {
   margin-right: 10px;
 }
 

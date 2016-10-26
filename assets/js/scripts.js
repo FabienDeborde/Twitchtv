@@ -75,8 +75,13 @@ $(document).ready(function() {
     if (streamData.status === null) {
       streamingMsg = '<div class="streamingContainer"><h4 class="noStream"> No previous Stream data available.</h4></div>';
     }
+    if(streamData.streamStatus === true){
+      streamData.streamStatus = 'streamOnline';
+    } else {
+      streamData.streamStatus = 'streamOffline'
+    }
     // streamContainer template
-    var streamContainerMsg = '<div class="streamContainer" id="'+ streamData.userName + '">' + infoMsg + streamingMsg + '</div>';
+    var streamContainerMsg = '<div class="streamContainer ' + streamData.streamStatus +'" id="'+ streamData.userName + '">' + infoMsg + streamingMsg + '</div>';
 
     return streamContainerMsg;
   }
@@ -192,7 +197,7 @@ $(document).ready(function() {
   } // end of queryUserInfo
 
   updateContent();
-  
+
   function updateContent(){
     streamsContainerEl.html('');
     // Loop trhough the names array and call the query function
@@ -201,5 +206,7 @@ $(document).ready(function() {
     }
   }
 
-
+  $('.refresh').on('click', function(){
+    updateContent();
+  })
 });

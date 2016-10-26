@@ -261,6 +261,104 @@ html {
   color: #c0392b;
 }
 
+.container .streamMenu {
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.container .streamMenu .streamFilter {
+  margin-top: 20px;
+  display: flex;
+  background-color: #6441A5;
+  color: white;
+  font-size: 1.2em;
+  height: 40px;
+  font-weight: bold;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.container .streamMenu .streamFilter .filter, .container .streamMenu .streamFilter .refresh {
+  width: 150px;
+  height: 100%;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.container .streamMenu .streamFilter .filter:hover, .container .streamMenu .streamFilter .refresh:hover {
+  background-color: white;
+  color: #6441A5;
+  box-shadow: inset 0px 0px 0px 1px #6441A5;
+}
+
+.container .streamMenu .searchField {
+  width: 400px;
+  font-weight: normal;
+  display: flex;
+}
+
+.container .streamMenu .searchField input {
+  border-radius: 4px;
+  margin-left: 10px;
+  padding: 0px 10px;
+  border: 1px solid #6441A5;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input::placeholder {
+  opacity: 1;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input::-moz-placeholder {
+  opacity: 1;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input:-moz-placeholder {
+  opacity: 1;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input::-webkit-input-placeholder {
+  opacity: 1;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input:-ms-input-placeholder {
+  opacity: 1;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input::-ms-input-placeholder {
+  opacity: 1;
+  color: #6441A5;
+}
+
+.container .streamMenu .searchField input:focus {
+  border: 1px solid #6441A5;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.container .streamMenu .refresh {
+  text-align: center;
+  cursor: pointer;
+}
+
+.container .streamMenu .refresh span {
+  font-size: 1em;
+  margin-left: 15px;
+}
+
+.container .streamMenu .refresh:hover {
+  background-color: white;
+  color: #6441A5;
+  box-shadow: inset 0px 0px 0px 1px #6441A5;
+}
+
 .container .streamsContainer {
   color: #6441A5;
 }

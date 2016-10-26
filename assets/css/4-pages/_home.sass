@@ -22,6 +22,62 @@ html
     p#errorMsg
       color: $red
 
+  .streamMenu
+    margin: auto
+    margin-bottom: 10px
+    .streamFilter
+      margin-top: 20px
+      display: flex
+      background-color: $primary
+      color: $white
+      font-size: 1.2em
+      height: 40px
+      font-weight: bold
+      justify-content: space-around
+      align-items: center
+      border-radius: 4px
+      .filter
+        width: 150px
+        height: 100%
+        line-height: 40px
+        text-align: center
+        cursor: pointer
+        &:hover
+          background-color: $white
+          color: $primary
+          box-shadow: inset 0px 0px 0px 1px $primary
+
+    .searchField
+      width: 400px
+      font-weight: normal
+      display: flex
+      input
+        border-radius: 4px
+        margin-left: 10px
+        padding: 0px 10px
+        border: 1px solid $primary
+        color: $primary
+        @include placeholder
+          opacity: 1
+          color: $primary
+        &:focus
+          border: 1px solid $primary
+          box-sizing: border-box
+          outline: none
+
+
+    .refresh
+      @extend .filter
+      text-align: center
+      cursor: pointer
+      span
+        font-size: 1em
+        margin-left: 15px
+      &:hover
+        background-color: $white
+        color: $primary
+        box-shadow: inset 0px 0px 0px 1px $primary
+
 
   .streamsContainer
 

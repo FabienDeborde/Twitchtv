@@ -14,6 +14,15 @@ body
     .ajaxMsg
       p#queryMsg 
       p#errorMsg 
+    .streamMenu
+      .streamFilter
+        .allStreams.filter All
+        .onlineStreams.filter Online
+        .offlineStreams.filter Offline
+        .searchField Filter: 
+          input(type="text", placeholder="Enter a name")
+        .refresh Refresh
+          span.octicon.octicon-sync
     .streamsContainer.hide
     
     

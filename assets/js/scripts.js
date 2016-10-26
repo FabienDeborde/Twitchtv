@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-   // My channels array
+  // My channels array
   var names = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "comster404", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
 
   //Variable to store element
@@ -50,7 +50,7 @@ $(document).ready(function() {
     // Cleaning the null / empty variables
     if (streamData.video_banner === null) {streamData.video_banner = 'assets/img/nopreview.png';}
     if (streamData.game === null) {streamData.game = '(No data)';}
-    
+
     // streamingContainer template
     var streamingMsg = '<div class="streamingContainer">'
     streamingMsg += '<hr>';
@@ -76,14 +76,14 @@ $(document).ready(function() {
       streamingMsg = '<div class="streamingContainer"><h4 class="noStream"> No previous Stream data available.</h4></div>';
     }
     // streamContainer template
-    var streamContainerMsg = '<div class="streamContainer">' + infoMsg + streamingMsg + '</div>';
+    var streamContainerMsg = '<div class="streamContainer" id="'+ streamData.userName + '">' + infoMsg + streamingMsg + '</div>';
 
     return streamContainerMsg;
   }
 
   // Contains the errorDiv template
   var errorDiv = function userError(queryName){
-    var errorMessage = '<div class="errorContainer"><div class="errorMessage"><span class="octicon octicon-bug"></span>Oops... "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
+    var errorMessage = '<div class="errorContainer" id="' + queryName + '"><div class="errorMessage"><span class="octicon octicon-bug"></span>Oops... "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
     return errorMessage;
   }
 
@@ -107,6 +107,9 @@ $(document).ready(function() {
 
   // My main function, a bit of Ajax Hell in it (3 calls: users, channels, streams endpoints)
   function queryUserInfo(queryName){
+    if (streamsContainerEl.hasClass('hide')) {
+      streamsContainerEl.fadeIn(2000);
+    }
     // Call the users endpoint
     $.ajax({
       method:'GET',
@@ -188,10 +191,14 @@ $(document).ready(function() {
     }) // end of ajax
   } // end of queryUserInfo
 
-
-  // Loop trhough the names array and call the query function
-  for (var i = 0; i < names.length; i++) {
-    queryUserInfo(names[i]);
+  updateContent();
+  
+  function updateContent(){
+    streamsContainerEl.html('');
+    // Loop trhough the names array and call the query function
+    for (var i = 0; i < names.length; i++) {
+      queryUserInfo(names[i]);
+    }
   }
 
 

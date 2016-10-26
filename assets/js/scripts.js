@@ -42,7 +42,7 @@ $(document).ready(function() {
     if(streamData.streamStatus === false) {
       infoMsg += '<div class="indicator"><span class="octicon octicon-device-camera-video offline"></span></div> ';
     } else {
-      infoMsg += '<div class="indicator"><span class="octicon octicon-device-camera-video online"></span></div> ';  
+      infoMsg += '<div class="indicator"><span class="octicon octicon-device-camera-video online"></span></div> ';
     }
     infoMsg += '<div class="moreInfo"><span class="octicon octicon-plus"></span><span class="octicon octicon-dash hide"></span></div>'
     infoMsg += '</div></div>'; // close status, basicInfos
@@ -79,18 +79,6 @@ $(document).ready(function() {
     return errorMessage;
   }
 
-  // Change the octicon-device-camera-video color
-  function changeColor(){
-    var cameraIcon = $('.octicon-device-camera-video');
-    if (streamData.streamStatus === true) {
-      cameraIcon.removeClass('offline online');
-      cameraIcon.addClass('online');
-    } else {
-      cameraIcon.removeClass('offline online');
-      cameraIcon.addClass('offline');
-    }
-  }
-
   // Hide/Show the Streaming Container and change the +/- button
   function clickEvent(){
     $('.moreInfo').unbind('click').on('click',function(event){
@@ -109,8 +97,9 @@ $(document).ready(function() {
     });
   }
 
-
-function queryUserInfo(queryName){
+  // My main function, a bit of Ajax Hell in it (3 calls: users, channels, streams endpoints)
+  function queryUserInfo(queryName){
+    // Call the users endpoint
     $.ajax({
       method:'GET',
       url: 'https://api.twitch.tv/kraken/users/' + queryName + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
@@ -123,7 +112,8 @@ function queryUserInfo(queryName){
         queryMsgEl.text('');
       },
       success: function(data){
-        streamData.bio = data.bio;
+        var bio = data.bio; // Storing this data in a new var to pass it to the next ajax calls
+        // Call the Streams endpoint
         $.ajax({
           method:'GET',
           url: 'https://api.twitch.tv/kraken/streams/' + queryName + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
@@ -131,8 +121,7 @@ function queryUserInfo(queryName){
           timeout: 2000,
           success: function(data){
             if (data.stream === null) {
-              // Query in channels endpoint
-              console.log('Stream is offline');
+              // Call the Channels endpoint
               $.ajax({
                 method:'GET',
                 url: 'https://api.twitch.tv/kraken/channels/' + queryName + '?client_id=nlub2puh9ouq02ssgkc5oem66rw14ty',
@@ -144,6 +133,7 @@ function queryUserInfo(queryName){
                   // User data
                   streamData.userName = data.display_name;
                   streamData.logo = data.logo;
+                  streamData.bio = bio;
                   // Channel data
                   streamData.views = data.views;
                   streamData.followers = data.followers;
@@ -153,6 +143,7 @@ function queryUserInfo(queryName){
                   streamData.game = data.game;
                   streamData.status = data.status;
 
+                  // Pass the fetched data to the createContent function and add the click event
                   streamsContainerEl.append(msg(streamData));
                   clickEvent();
                 }
@@ -166,6 +157,7 @@ function queryUserInfo(queryName){
               // User data
               streamData.userName = data.stream.channel.display_name;
               streamData.logo = data.stream.channel.logo;
+              streamData.bio = bio;
               // Channel data
               streamData.views = data.stream.channel.views;
               streamData.followers = data.stream.channel.followers;
@@ -176,6 +168,7 @@ function queryUserInfo(queryName){
               streamData.game = data.stream.game;
               streamData.status = data.stream.channel.status;
 
+              // Pass the fetched data to the createContent function and add the click event
               streamsContainerEl.append(msg(streamData));
               clickEvent();
             } // end of else
@@ -188,16 +181,16 @@ function queryUserInfo(queryName){
 
 
 
-  queryUserInfo(name[0]);
-  //queryUserInfo(name[1]);
-  //queryUserInfo('ppd');
-  queryUserInfo(name[3]);
-  queryUserInfo('brunofin');
-  /*queryUserInfo(name[4], 4);
-  queryUserInfo(name[5], 5);
-  queryUserInfo(name[6], 6);
-  queryUserInfo(name[7], 7);
-  queryUserInfo(name[8], 8);*/
+queryUserInfo(name[0]);
+queryUserInfo(name[1]);
+queryUserInfo('ppd');
+queryUserInfo(name[3]);
+queryUserInfo('brunofin');
+/*queryUserInfo(name[4], 4);
+queryUserInfo(name[5], 5);
+queryUserInfo(name[6], 6);
+queryUserInfo(name[7], 7);
+queryUserInfo(name[8], 8);*/
 
 
 });

@@ -89,7 +89,7 @@ $(document).ready(function() {
 
   // Contains the errorDiv template
   var errorDiv = function userError(queryName){
-    var errorMessage = '<div class="errorContainer" id="' + queryName + '"><div class="errorMessage"><span class="octicon octicon-bug"></span>Oops... "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
+    var errorMessage = '<div class="errorContainer streamContainer" id="' + queryName + '"><div class="errorMessage"><span class="octicon octicon-bug"></span>Oops... "' + queryName + '" channel doesn\'t exist or has been deleted.</div></div>';
     return errorMessage;
   }
 
@@ -109,6 +109,15 @@ $(document).ready(function() {
       // Toggle and slide the streaming container
       streamingContainer.slideToggle(500);
     });
+  }
+
+  // Get all the containers ids and put them in an array
+  var idsArray = function getIds(){
+    var containersId = [];
+    streamsContainerEl.find('.streamContainer').each(function(){
+      containersId.push(this.id);
+    });
+    return containersId;
   }
 
   // My main function, a bit of Ajax Hell in it (3 calls: users, channels, streams endpoints)
@@ -201,8 +210,7 @@ $(document).ready(function() {
     }) // end of ajax
   } // end of queryUserInfo
 
-  updateContent();
-
+  // Loop through the names array and call the queryUserInfo function
   function updateContent(){
     streamsContainerEl.html('');
     // Loop trhough the names array and call the query function
@@ -211,20 +219,27 @@ $(document).ready(function() {
     }
   }
 
+  // Call updateContent when the page loads
+  updateContent();
+
+  // Call updateContent when the user click the refresh button
   $('.refresh').on('click', function(){
     updateContent();
   })
 
   // Click event to filter the streams status
   $('.filter').on('click', function(event){
+    // Get the value of the clicked button
     var target = $(event.target);
     var targetText = target.text();
 
-    var offlineEl = $('.streamsContainer').find('.streamOffline');
-    var onlineEl = $('.streamsContainer').find('.streamOnline');
-    var allEl = $('.streamsContainer').find('.streamContainer');
-    var errorEl = $('.streamsContainer').find('.errorContainer');
+    // Store the streamContainer depending of their status
+    var offlineEl = streamsContainerEl.find('.streamOffline');
+    var onlineEl = streamsContainerEl.find('.streamOnline');
+    var allEl = streamsContainerEl.find('.streamContainer');
+    var errorEl = streamsContainerEl.find('.errorContainer');
 
+    // Compare the value of the button and hide/show the streamContainer
     if (targetText === 'Online') {
       onlineEl.show();
       offlineEl.hide();
@@ -238,15 +253,33 @@ $(document).ready(function() {
       offlineEl.show();
       errorEl.show();
     }
-
-
-
   })
 
   // Keyup event to filter the streams with text
   $('#filterTxt').on('keyup', function(event){
-    var textVal = ($('#filterTxt').val());
-    
+    var idList = idsArray(); // Store all the stream ids in an array
+    var filteredIds = []; // Create an new empty array
+    var textVal = ($('#filterTxt').val()); // Get the text value the user entered
+
+    // If the user entered something
+    if (textVal !== '') {
+      $('.streamContainer').hide(); // Hide all streams
+      // Filter the ids array, filteredIds contains now only the ids containing the text entered by the user
+      filteredIds = $.grep(idList,function(item, index){
+        if(item.indexOf(textVal) > -1){
+          return true;
+        } else {
+          return false;
+        }
+      })
+
+      // Show only the streams that have the same ids that those in filteredIds array
+      for (var i = 0; i < filteredIds.length; i++) {
+        $('#' + filteredIds[i]).show();
+      }
+    } else { // If the text is blank
+      $('.streamContainer').show(); // Show all streams
+    }
   })
 
 });

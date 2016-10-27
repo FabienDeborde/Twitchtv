@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // My channels array
-  var names = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "comster404", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
+  var names = ["moonducktv", "beyondthesummit", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "comster404", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
 
   //Variable to store element
   var queryMsgEl = $('p#queryMsg');

@@ -35,7 +35,7 @@ $(document).ready(function() {
     infoMsg += '<div class="infos"><h2 class="userName">' + streamData.userName + '</h2>';
     infoMsg += '<p class="bio">' + streamData.bio + '</p>';
     infoMsg += '<div class="icons">';
-    infoMsg += '<div class="views" title="Viewers"><span class="octicon octicon-eye"></span><span class="totalViews">' + streamData.views + '</span></div>';
+    infoMsg += '<div class="views" title="Total Views"><span class="octicon octicon-eye"></span><span class="totalViews">' + streamData.views + '</span></div>';
     infoMsg += '<div class="followers" title="Followers"><span class="octicon octicon-person"></span><span class="totalFollowers">' + streamData.followers + '</span></div>';
     infoMsg += '<div class="link"><a class="linkOff" href="' + streamData.url + '" target="_blank" title="Watch on the official page on Twitch!"><span class="octicon octicon-link-external"></span>Watch on the official page on Twitch!</a></div>';
     infoMsg += '</div></div>'; // close icons and infos

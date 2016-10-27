@@ -8,4 +8,4 @@ By default names = ["moonducktv", "beyondthesummit", "ESL_SC2", "OgamingSC2", "c
 
 (You might get an error on github pages because of https security layer).
 
-You can check the app working on [GitHub](https://fabiendeborde.github.io/Wikipedia-Viewer/) or on [CodePen] (http://codepen.io/fabien_d/full/GjzoXv/)
+You can check the app working on [GitHub](https://fabiendeborde.github.io/Twitchtv/) or on [CodePen] (http://codepen.io/fabien_d/full/XjQyQa/)

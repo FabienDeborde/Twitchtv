@@ -435,7 +435,8 @@ html {
 
 .container .streamsContainer .streamContainer .basicInfos .infos .icons a, .container .streamsContainer .errorContainer .basicInfos .infos .icons a {
   text-decoration: none;
-  color: white;
+  color: #6441A5;
+  font-style: italic;
 }
 
 .container .streamsContainer .streamContainer .basicInfos .infos .icons a:hover, .container .streamsContainer .errorContainer .basicInfos .infos .icons a:hover {

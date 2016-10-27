@@ -3,10 +3,21 @@
 //
 $black: #040404
 $white: white
-$darkBlue: #2c3e50
 $green: #16a085
 $red: #c0392b
-$primary: #2c3e50
-$secondary: #34495e
-$light: #ecf0f1
-$muted: #bdc3c7
+$primary: #6441A5
+$lightgrey: #F1F1F1
+
+@mixin placeholder
+  &::placeholder
+    @content
+  &::-moz-placeholder
+    @content
+  &:-moz-placeholder
+    @content
+  &::-webkit-input-placeholder
+    @content
+  &:-ms-input-placeholder
+    @content
+  &::-ms-input-placeholder
+    @content
